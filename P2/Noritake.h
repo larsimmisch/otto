@@ -10,6 +10,8 @@ class _Noritake
 {
 public:
 
+    static const byte width = width_;
+
     static void send(byte c, int period = 40) {
         SPI_::transfer(c, period);
     }
@@ -22,7 +24,7 @@ public:
 
 	static void send_rs(byte c, int period = 40) {
         // Set RS low
-        SPI_::transfer(0xf, 40);
+        SPI_::transfer((byte)0xf, 40);
         SPI_::transfer(c, period);
     }
 
@@ -143,22 +145,23 @@ public:
         // Each digit is 4 pixel space (including 1 pixel space)
         const byte digit_width = 4;
         const byte levelwidth = 3 * digit_width;
-        // width of the bar, excluding borders
-        const unsigned barwidth = width_ - levelwidth - 4;
+        const byte borderwidth = 4;
+        // width of the bar, excluding borders, right margin is 2
+        const unsigned barwidth = width_ - levelwidth - borderwidth - 2;
 
-        const unsigned vpos = (unsigned)v * height * barwidth / barwidth;
+        const unsigned vpos = (unsigned)v * height * barwidth / 128;
 
         // the borders are 2 pixel each
         // 0x80 is the left border
-        byte bar[(barwidth + 4) / 8 + 1] = { 0x80 };
+        byte bar[(barwidth + borderwidth - 1) / 8 + 1] = { 0x80 };
         // start after the left border
         byte bit = 0x20;
         byte k = 0;
 
         // right border
-        bar[(barwidth - 2) / 8] = 0x40 >> ((barwidth + 2) % 8);
+        bar[(barwidth + borderwidth - 1) / 8] = 
+            0x80 >> (((barwidth + borderwidth - 1) % 8) - 1);
 
-#if 0
         for (unsigned i = 0; i < vpos / height; ++i)
         {
             bar[k] |= bit;
@@ -169,7 +172,6 @@ public:
                 ++k;
             }
         }
-#endif
 
         const byte rem = height - (vpos % height);
 
@@ -180,7 +182,6 @@ public:
                      sizeof(bar), (const char *)bar);
         }
       
-#if 0  
         // extend the bar by one pixel
         bar[k] |= bit;
         
@@ -190,7 +191,8 @@ public:
                      y_offset + i, 'H',
                      sizeof(bar), (const char *)bar);
         }
-#endif
+
+        // Level display
 
         char buf[4] = { 0, 0, 0, 0 };
         itoa(v, buf, 10);
