@@ -8145,7 +8145,6 @@ Based on the following sources:
 <part name="FRAME1" library="frames" deviceset="LETTER_L" device=""/>
 <part name="CON1" library="con-harting-lars" deviceset="CON10L" device="" value="Volume"/>
 <part name="Q1" library="special" deviceset="XTAL/S" device="" value="16MHz"/>
-<part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="CON2" library="con-harting-lars" deviceset="CON10L" device="" value="Noritake"/>
 <part name="I2C" library="SparkFun" deviceset="M02" device="PTH" value="scl sda"/>
 <part name="PWR" library="SparkFun" deviceset="M02" device="PTH" value=" -      +"/>
@@ -8193,6 +8192,7 @@ Based on the following sources:
 <part name="P+12" library="supply1" deviceset="+5V" device=""/>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
 <part name="GND16" library="supply1" deviceset="GND" device=""/>
+<part name="I2C1" library="SparkFun" deviceset="M02" device="PTH" value="pb0 pb1"/>
 </parts>
 <sheets>
 <sheet>
@@ -8218,7 +8218,6 @@ Based on the following sources:
 <instance part="FRAME1" gate="G$2" x="147.32" y="0"/>
 <instance part="CON1" gate="G$1" x="142.24" y="124.46"/>
 <instance part="Q1" gate="G$1" x="25.4" y="86.36" rot="R270"/>
-<instance part="GND3" gate="1" x="30.48" y="160.02" rot="R270"/>
 <instance part="CON2" gate="G$1" x="152.4" y="48.26"/>
 <instance part="I2C" gate="G$1" x="119.38" y="93.98" rot="R180"/>
 <instance part="PWR" gate="G$1" x="33.02" y="137.16" rot="R180"/>
@@ -8277,6 +8276,7 @@ Based on the following sources:
 <instance part="P+12" gate="1" x="172.72" y="111.76"/>
 <instance part="GND15" gate="1" x="195.58" y="81.28"/>
 <instance part="GND16" gate="1" x="190.5" y="101.6" rot="R90"/>
+<instance part="I2C1" gate="G$1" x="119.38" y="58.42" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -8346,7 +8346,10 @@ Based on the following sources:
 <segment>
 <pinref part="IC1" gate="1" pin="GND@1"/>
 <pinref part="GND1" gate="1" pin="GND"/>
-<wire x1="38.1" y1="48.26" x2="38.1" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="48.26" x2="38.1" y2="45.72" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="1" pin="GND@2"/>
+<junction x="38.1" y="45.72"/>
+<wire x1="38.1" y1="45.72" x2="38.1" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND10" gate="1" pin="GND"/>
@@ -8559,11 +8562,16 @@ Based on the following sources:
 <label x="58.42" y="167.64" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="D8" class="0">
+<net name="SS" class="0">
 <segment>
 <wire x1="160.02" y1="45.72" x2="162.56" y2="45.72" width="0.1524" layer="91"/>
 <label x="160.02" y="45.72" size="1.778" layer="95"/>
 <pinref part="CON2" gate="G$1" pin="3"/>
+</segment>
+<segment>
+<pinref part="IC1" gate="1" pin="PB2(SS/OC1B/PCINT2)"/>
+<wire x1="99.06" y1="53.34" x2="101.6" y2="53.34" width="0.1524" layer="91"/>
+<label x="101.6" y="53.34" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -8614,6 +8622,16 @@ Based on the following sources:
 <wire x1="22.86" y1="15.24" x2="17.78" y2="15.24" width="0.1524" layer="91"/>
 <label x="10.16" y="15.24" size="1.778" layer="95"/>
 <pinref part="PGM" gate="G$1" pin="5"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="!SRCLR"/>
+<wire x1="63.5" y1="170.18" x2="58.42" y2="170.18" width="0.1524" layer="91"/>
+<label x="55.88" y="170.18" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC3" gate="G$1" pin="!SRCLR"/>
+<wire x1="63.5" y1="132.08" x2="55.88" y2="132.08" width="0.1524" layer="91"/>
+<label x="55.88" y="132.08" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="QE1" class="0">
@@ -8719,13 +8737,6 @@ Based on the following sources:
 <wire x1="99.06" y1="93.98" x2="111.76" y2="93.98" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$8" class="0">
-<segment>
-<pinref part="IC1" gate="1" pin="PC5(ADC5/SCL/PCINT13)"/>
-<pinref part="I2C" gate="G$1" pin="2"/>
-<wire x1="99.06" y1="91.44" x2="111.76" y2="91.44" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="OUT0" class="0">
 <segment>
 <pinref part="CON1" gate="G$1" pin="4"/>
@@ -8825,15 +8836,17 @@ Based on the following sources:
 <net name="PB1" class="0">
 <segment>
 <pinref part="IC1" gate="1" pin="PB1(OC1A/PCINT1)"/>
-<wire x1="99.06" y1="55.88" x2="101.6" y2="55.88" width="0.1524" layer="91"/>
 <label x="101.6" y="55.88" size="1.778" layer="95"/>
+<pinref part="I2C1" gate="G$1" pin="2"/>
+<wire x1="99.06" y1="55.88" x2="111.76" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PB0" class="0">
 <segment>
 <pinref part="IC1" gate="1" pin="PB0(ICP1/CLKO/PCINT0)"/>
-<wire x1="99.06" y1="58.42" x2="101.6" y2="58.42" width="0.1524" layer="91"/>
 <label x="101.6" y="58.42" size="1.778" layer="95"/>
+<pinref part="I2C1" gate="G$1" pin="1"/>
+<wire x1="99.06" y1="58.42" x2="111.76" y2="58.42" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="OUT8" class="0">
@@ -8919,12 +8932,6 @@ Based on the following sources:
 <label x="162.56" y="162.56" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$14" class="0">
-<segment>
-<pinref part="AUTOSENSE" gate="G$1" pin="11"/>
-<wire x1="152.4" y1="172.72" x2="149.86" y2="172.72" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="OUT13" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DRAIN5"/>
@@ -8948,9 +8955,63 @@ Based on the following sources:
 <pinref part="I2C2" gate="G$1" pin="1"/>
 </segment>
 </net>
+<net name="G" class="0">
+<segment>
+<pinref part="IC2" gate="G$1" pin="!G"/>
+<wire x1="63.5" y1="175.26" x2="60.96" y2="175.26" width="0.1524" layer="91"/>
+<label x="60.96" y="175.26" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC3" gate="G$1" pin="!G"/>
+<wire x1="63.5" y1="137.16" x2="60.96" y2="137.16" width="0.1524" layer="91"/>
+<label x="60.96" y="137.16" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC1" gate="1" pin="PD3(INT1/OC2B/PCINT19)"/>
+<wire x1="99.06" y1="73.66" x2="101.6" y2="73.66" width="0.1524" layer="91"/>
+<label x="101.6" y="73.66" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="RCK" class="0">
+<segment>
+<pinref part="IC2" gate="G$1" pin="RCK"/>
+<wire x1="63.5" y1="172.72" x2="60.96" y2="172.72" width="0.1524" layer="91"/>
+<label x="58.42" y="172.72" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC3" gate="G$1" pin="RCK"/>
+<wire x1="63.5" y1="134.62" x2="60.96" y2="134.62" width="0.1524" layer="91"/>
+<label x="58.42" y="134.62" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC1" gate="1" pin="PD2(INT0/PCINT18)"/>
+<wire x1="99.06" y1="76.2" x2="101.6" y2="76.2" width="0.1524" layer="91"/>
+<label x="101.6" y="76.2" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$8" class="0">
+<segment>
+<pinref part="IC1" gate="1" pin="PC5(ADC5/SCL/PCINT13)"/>
+<pinref part="I2C" gate="G$1" pin="2"/>
+<wire x1="99.06" y1="91.44" x2="111.76" y2="91.44" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
+<errors>
+<approved hash="104,1,38.1,76.2,IC1,VCC,+5V,,,"/>
+<approved hash="104,1,38.1,73.66,IC1,VCC,+5V,,,"/>
+<approved hash="104,1,63.5,160.02,IC2,VCC,+5V,,,"/>
+<approved hash="104,1,63.5,121.92,IC3,VCC,+5V,,,"/>
+<approved hash="115,1,124.356,92.606,FRAME1,,,,,"/>
+<approved hash="115,1,120.057,15.0453,Q,,,,,"/>
+<approved hash="115,1,28.2617,44.45,L1,,,,,"/>
+<approved hash="115,1,10.4817,44.45,L2,,,,,"/>
+<approved hash="115,1,43.18,116.451,S1,,,,,"/>
+<approved hash="115,1,134.857,83.9512,JP1,,,,,"/>
+<approved hash="115,1,142.486,169.105,AUTOSENSE,,,,,"/>
+</errors>
 </schematic>
 </drawing>
 </eagle>
