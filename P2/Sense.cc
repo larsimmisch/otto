@@ -4,16 +4,16 @@
 #include "ringbuffer.h"
 #include "eventwait.h"
 
-const static byte CYCLES = 64;
-// The ADC has 10 bits resolution
-const static uint16_t MAX_ENERGY = 1 << 10;
+const static uint16_t CYCLES = 64;
+// We use 8 bits ADC resolution, but zero is at v/2
+const static uint16_t ENERGY_SCALE = ((1 << 7) * CYCLES / 256);
 
-typedef struct {
+struct ADCEvent {
     byte channel;
-    int energy;
-} ADCEvent;
+    byte energy;
+};
 
-typedef class _Max7219<Arduino::D10, Arduino::D8, Arduino::D9> Max7219;
+typedef class _Max7219<Pin::B2, Pin::B0, Pin::B1> Max7219;
 
 typedef _Ringbuffer<ADCEvent, 4> ADCbuffer;
 
@@ -21,59 +21,40 @@ _EventWait<Clock16, ADCbuffer> ADCResults;
 
 ISR(ADC_vect)
 {
-    static byte index = 0;
     static byte count = 0;
-    static long accu[4];
+    static int accu = 0;
 
-    int v = 0;
-
-    switch (index) {
-    case 0:
-        v = Pin::ADC0::analogValue();
-        Pin::ADC1::analogActivate();
-        break;
-    case 1:
-        v = Pin::ADC1::analogValue();
-        Pin::ADC2::analogActivate();
-        break;
-    case 2:
-        v = Pin::ADC2::analogValue();
-        Pin::ADC3::analogActivate();
-        break;
-    case 3:
-        v = Pin::ADC3::analogValue();
-        Pin::ADC0::analogActivate();
-        break;
-    }
-    
-    accu[index] += v < 0 ? -v : v;
+    int8_t v = ADCMux::analogLeftAdjusted() - 128;
+    accu += v < 0 ? -v : v;
     ++count;
 
     if (count == CYCLES) {
 
         ADCEvent ev;
+        byte tmp = ADMUX;
 
-        ev.channel = index;
-        ev.energy = accu[index] / CYCLES;
-        
+        ev.channel = tmp & 0x0f;
+        ev.energy = accu / ENERGY_SCALE;
+        accu = 0;
+
+        // ADMUX = (tmp & ~0x0f) | ((ev.channel + 1) % 4);
+
         ADCResults.push(ev);
-        
-        accu[index] = 0;
     }
-    index = (index + 1) % 4;
-}
-
-byte bar(int energy)
-{
-    byte max_bit = energy / (MAX_ENERGY / 8);
-
-    return (1 << max_bit) - 1;
 }
 
 int main(void)
 {
     Arduino::init();
     Max7219::init();
+
+    // At our clock frequency of 16 MHz, this runs the ADC clock at 500kHz and 
+    // we get a sampling frequency of 38kHz
+    // At this ADC clock rate, we don't get the full resolution, but we don't 
+    // care
+    ADCMux::prescaler32();
+    ADCMux::enableInterrupt();
+    Pin::ADC0::analogStart(Pin::ADC0::LEFT_ADJUST);
 
     for(;;) {
         ADCResults.wait_event();
@@ -83,8 +64,9 @@ int main(void)
             ADCEvent ev(ADCResults.front());
             ADCResults.pop();
 
-            Max7219::set(Max7219::ROW0 + ev.channel, bar(ev.energy));
-            Max7219::set(Max7219::ROW1 + ev.channel, bar(ev.energy));
+            Max7219::set(Max7219::ROW0 + ev.channel, ev.energy);
+            // Max7219::set(Max7219::ROW0 + i * 2, bar(ev.energy[i]));
+            // Max7219::set(Max7219::ROW1 + i * 2, bar(ev.energy[i]));
         }
     }
 
