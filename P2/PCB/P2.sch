@@ -9241,6 +9241,9 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <pinref part="IC1" gate="1" pin="VCC@2"/>
 <wire x1="38.1" y1="76.2" x2="38.1" y2="73.66" width="0.1524" layer="91"/>
 <junction x="38.1" y="76.2"/>
+<pinref part="IC1" gate="1" pin="AVCC"/>
+<wire x1="38.1" y1="68.58" x2="38.1" y2="73.66" width="0.1524" layer="91"/>
+<junction x="38.1" y="73.66"/>
 </segment>
 <segment>
 <pinref part="P+4" gate="1" pin="+5V"/>
