@@ -8968,6 +8968,7 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <part name="JP4" library="SparkFun-Connectors" deviceset="M03" device="PTH" value="ir"/>
 <part name="P+14" library="supply1" deviceset="+5V" device=""/>
 <part name="SS" library="SparkFun-Connectors" deviceset="M01" device="PTH" value="M01PTH"/>
+<part name="JP5" library="SparkFun" deviceset="M02" device="PTH" value="aref"/>
 </parts>
 <sheets>
 <sheet>
@@ -9058,6 +9059,7 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <instance part="JP4" gate="G$1" x="152.4" y="71.12" rot="R180"/>
 <instance part="P+14" gate="1" x="139.7" y="60.96" rot="R180"/>
 <instance part="SS" gate="G$1" x="73.66" y="15.24"/>
+<instance part="JP5" gate="G$1" x="17.78" y="66.04"/>
 </instances>
 <busses>
 </busses>
@@ -9071,6 +9073,11 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <pinref part="GND2" gate="1" pin="GND"/>
 <pinref part="C1" gate="G$1" pin="1"/>
 <pinref part="C3" gate="G$1" pin="1"/>
+<pinref part="JP5" gate="G$1" pin="2"/>
+<wire x1="25.4" y1="68.58" x2="25.4" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="73.66" x2="5.08" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="73.66" x2="5.08" y2="99.06" width="0.1524" layer="91"/>
+<junction x="5.08" y="99.06"/>
 </segment>
 <segment>
 <wire x1="17.78" y1="132.08" x2="20.32" y2="132.08" width="0.1524" layer="91"/>
@@ -9844,6 +9851,13 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <wire x1="109.22" y1="58.42" x2="109.22" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="JP2" gate="G$1" pin="2"/>
 <wire x1="109.22" y1="55.88" x2="111.76" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$13" class="0">
+<segment>
+<pinref part="JP5" gate="G$1" pin="1"/>
+<pinref part="IC1" gate="1" pin="AREF"/>
+<wire x1="25.4" y1="66.04" x2="38.1" y2="66.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
