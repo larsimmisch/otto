@@ -127,6 +127,8 @@
 <text x="97.695" y="16.735" size="1.27" layer="25" rot="R90">QB</text>
 <hole x="2.04" y="2.04" drill="3.2"/>
 <hole x="96.52" y="28.44" drill="3.2"/>
+<text x="62.865" y="26.035" size="1.778" layer="25" rot="R90">grn</text>
+<text x="80.645" y="26.3525" size="1.778" layer="25" rot="R90">blk</text>
 </plain>
 <libraries>
 <library name="SparkFun">
@@ -1110,7 +1112,7 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="VALUE" x="63.5" y="10.16" size="1.27" layer="27"/>
 </element>
 <element name="SS" library="SparkFun-Connectors" package="1X01" value="M01PTH" x="81.28" y="24.13" smashed="yes">
-<attribute name="NAME" x="79.9338" y="25.9588" size="1.27" layer="25"/>
+<attribute name="NAME" x="77.3938" y="22.4663" size="1.27" layer="25"/>
 </element>
 <element name="JP5" library="SparkFun" package="1X02" value="aref" x="40.64" y="17.78" rot="R90"/>
 </elements>
@@ -1929,10 +1931,10 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="N$10">
 <contactref element="IC1" pad="12"/>
 <contactref element="JP2" pad="2"/>
-<wire x1="57.6326" y1="13.57" x2="63.4175" y2="13.57" width="0.254" layer="1"/>
-<wire x1="63.4175" y1="13.57" x2="66.675" y2="16.8275" width="0.254" layer="1"/>
-<wire x1="66.675" y1="16.8275" x2="66.9925" y2="16.8275" width="0.254" layer="1"/>
-<wire x1="66.9925" y1="16.8275" x2="67.31" y2="17.145" width="0.254" layer="1"/>
+<wire x1="67.31" y1="17.145" x2="66.675" y2="17.145" width="0.254" layer="1"/>
+<wire x1="66.675" y1="17.145" x2="63.1825" y2="13.6525" width="0.254" layer="1"/>
+<wire x1="63.1825" y1="13.6525" x2="57.7151" y2="13.6525" width="0.254" layer="1"/>
+<wire x1="57.7151" y1="13.6525" x2="57.6326" y2="13.57" width="0.254" layer="1"/>
 </signal>
 <signal name="N$13">
 <contactref element="JP5" pad="1"/>
