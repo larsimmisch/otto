@@ -50,6 +50,9 @@ ISR(TIMER0_OVF_vect)
     clock16_isr();
 }
 
+// All relays are controlled by two cascaded TPIC6B595 shift registers.
+// The first shift register controls the volume control relays
+// The second shift register controls input selection and auxilliary power
 template<class RCK_, class G_>
 class _CombiControl
 {
