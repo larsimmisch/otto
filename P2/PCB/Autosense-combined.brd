@@ -616,7 +616,7 @@ Please make sure your boards conform to these design rules.</description>
 </element>
 <element name="R6" library="resistor" package="R0805" value="10k" x="8.255" y="14.605" rot="MR90"/>
 <element name="K1" library="relay" package="G6H2-100" value="G6H2-100" x="80.01" y="24.765" smashed="yes" rot="R90">
-<attribute name="NAME" x="79.4385" y="29.1465" size="1.27" layer="26" ratio="10" rot="MR0"/>
+<attribute name="NAME" x="80.54975" y="29.1465" size="1.27" layer="26" ratio="10" rot="MR0"/>
 </element>
 <element name="R5" library="resistor" package="R0805" value="10k" x="17.4625" y="14.605" rot="MR90"/>
 <element name="C1" library="SparkFun" package="CPOL-RADIAL-100UF-25V" value="100u" x="13.0175" y="14.605" rot="R180"/>
@@ -700,7 +700,7 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="NAME" x="65.913" y="16.256" size="1.27" layer="25"/>
 </element>
 <element name="K2" library="relay" package="G6H2-100" value="G6H2-100" x="64.77" y="24.765" smashed="yes" rot="R90">
-<attribute name="NAME" x="63.881" y="29.464" size="1.27" layer="26" ratio="10" rot="MR0"/>
+<attribute name="NAME" x="65.4685" y="29.464" size="1.27" layer="26" ratio="10" rot="MR0"/>
 </element>
 <element name="RB-2" library="rcl" package="M0805" value="10k" x="71.755" y="19.05" smashed="yes" rot="R90">
 <attribute name="NAME" x="73.025" y="20.955" size="1.27" layer="25" rot="R270"/>
@@ -740,7 +740,7 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="NAME" x="50.3555" y="16.256" size="1.27" layer="25"/>
 </element>
 <element name="K3" library="relay" package="G6H2-100" value="G6H2-100" x="49.2125" y="24.765" smashed="yes" rot="R90">
-<attribute name="NAME" x="48.3235" y="29.1465" size="1.27" layer="26" ratio="10" rot="MR0"/>
+<attribute name="NAME" x="49.911" y="29.1465" size="1.27" layer="26" ratio="10" rot="MR0"/>
 </element>
 <element name="RB-3" library="rcl" package="M0805" value="10k" x="56.1975" y="19.05" smashed="yes" rot="R90">
 <attribute name="NAME" x="57.4675" y="21.11375" size="1.27" layer="25" rot="R270"/>
@@ -777,7 +777,7 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="NAME" x="35.1155" y="16.256" size="1.27" layer="25"/>
 </element>
 <element name="K4" library="relay" package="G6H2-100" value="G6H2-100" x="33.9725" y="24.765" smashed="yes" rot="R90">
-<attribute name="NAME" x="33.0835" y="29.1465" size="1.27" layer="26" ratio="10" rot="MR0"/>
+<attribute name="NAME" x="34.671" y="29.1465" size="1.27" layer="26" ratio="10" rot="MR0"/>
 </element>
 <element name="RB-4" library="rcl" package="M0805" value="10k" x="40.9575" y="19.05" smashed="yes" rot="R90">
 <attribute name="NAME" x="42.06875" y="21.11375" size="1.27" layer="25" rot="R270"/>
@@ -816,7 +816,7 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="NAME" x="27.2758" y="41.1172" size="1.27" layer="25" ratio="10" rot="R180"/>
 </element>
 <element name="K5" library="relay" package="G6H2-100" value="G6H2-100" x="20.32" y="24.765" smashed="yes" rot="R90">
-<attribute name="NAME" x="19.27225" y="29.1465" size="1.27" layer="26" ratio="10" rot="MR0"/>
+<attribute name="NAME" x="21.17725" y="28.98775" size="1.27" layer="26" ratio="10" rot="MR0"/>
 </element>
 <element name="D1-5" library="diode" package="GF1" value="" x="20.32" y="19.685" rot="MR0"/>
 <element name="CV-2" library="rcl" package="C0805" value="100n" x="67.31" y="6.6675" smashed="yes" rot="MR90">
