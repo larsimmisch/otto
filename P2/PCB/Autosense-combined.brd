@@ -88,6 +88,7 @@
 <hole x="2.2225" y="1.905" drill="3.2"/>
 <hole x="87.63" y="1.905" drill="3.2"/>
 <hole x="2.2225" y="40.005" drill="3.2"/>
+<text x="21.59" y="2.54" size="1.778" layer="27" rot="R180">Autosense v2</text>
 </plain>
 <libraries>
 <library name="SparkFun">
