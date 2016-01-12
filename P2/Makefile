@@ -15,7 +15,7 @@ CFLAGS = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
 CXXFLAGS = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
 LDFLAGS = -Wl,-Map,$@.map $(LIBS)
 
-BIN = P2.bin Sense.bin test_wait.bin
+BIN = P2.bin Sense.bin test_wait.bin test_spi.bin
 
 all: $(BIN) $(BIN:.bin=.lst)
 
