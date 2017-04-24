@@ -1,0 +1,7 @@
+.depend
+*.o
+*.bin
+*.elf.map
+*.elf
+*.lst
+*.bak
