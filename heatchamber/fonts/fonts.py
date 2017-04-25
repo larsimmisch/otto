@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- coding: latin-1 -*-
 
 import sys
 from optparse import OptionParser
@@ -10,20 +10,16 @@ from PIL import Image
 # >>> a = Glyph('a', 'medium')
 # a.show()
 
-chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():., °'
+chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():., �'
 
 struct_glyph = """struct Glyph
 {
-    unsigned char code;
-    unsigned char size;
+    uint8_t code;
+    uint16_t size;
     const char *bitmap;
 };
 
 """
-
-char_map = {
-    '°': 176
-}
 
 def convert_byte(values):
     value = 0
@@ -65,7 +61,7 @@ class Fontfile:
         self.offsets = offsets
 
     def get_glyph(self, c):
-        i = char_map.get(c, ord(c))
+        i = ord(c)
         
         nospace = self.image.crop((self.offsets[i][0], self.offset,
                                    self.offsets[i][1], self.image.size[1] - 1))
@@ -115,7 +111,12 @@ class Glyph:
         return s + '";\n'
 
     def c_literal(self, indent = 4):
-        s = indent * ' ' + "{ '" + self.char + "', "
+        char_literal = "'" + self.char + "'"
+        
+        if ord(self.char) > 127:
+            char_literal = hex(ord(self.char))
+        
+        s = indent * ' ' + "{ " + char_literal + ", "
         s = s + '0x%02x, ' % ((self.size[0] << 4) + self.size[1])
         s = s + 'bm_%s_%02x, },\n' % (self.name, ord(self.char))
         return s

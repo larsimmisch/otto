@@ -20,10 +20,10 @@ BIN = heatchamber.bin
 all: $(BIN) $(BIN:.bin=.lst)
 
 fonts/sample.i: fonts/Sample.bmp
-	python fonts/convert_sample.py -o $@ $<
+	python3 fonts/convert_sample.py -o $@ $<
 
 fonts/fonts.c fonts/fonts.h: fonts/fonts.py
-	cd fonts; python fonts.py -f fonts.c -i fonts.h
+	cd fonts; python3 fonts.py -f fonts.c -i fonts.h
 
 Noritake.h: fonts/fonts.h
 
