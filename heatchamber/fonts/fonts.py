@@ -1,7 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-from __future__ import with_statement
 
 import sys
 from optparse import OptionParser
@@ -12,7 +10,7 @@ from PIL import Image
 # >>> a = Glyph('a', 'medium')
 # a.show()
 
-chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():., '
+chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():., °'
 
 struct_glyph = """struct Glyph
 {
@@ -24,7 +22,7 @@ struct_glyph = """struct Glyph
 """
 
 char_map = {
-    '°': 175
+    '°': 176
 }
 
 def convert_byte(values):
@@ -67,9 +65,8 @@ class Fontfile:
         self.offsets = offsets
 
     def get_glyph(self, c):
-        i = char_map.get(c, None)
-        if i is None:
-            i = ord(c)
+        i = char_map.get(c, ord(c))
+        
         nospace = self.image.crop((self.offsets[i][0], self.offset,
                                    self.offsets[i][1], self.image.size[1] - 1))
         glyph = Image.new('1', (nospace.size[0] + 1, nospace.size[1]), 255)
@@ -128,8 +125,7 @@ class Glyph:
 
 def extract_glyphs():
     glyphs = {}
-    fonts = [Fontfile('4x6', '4x6.bmp'),
-             Fontfile('medium', 'medium.2.font.bmp', 7),
+    fonts = [Fontfile('medium', 'medium.2.font.bmp', 7),
              Fontfile('huge', 'huge.2.font.bmp')]
     for f in fonts:
         d = {}
@@ -164,13 +160,13 @@ class Noritake:
 
     def graphics(self, area, fmt, data):
         if fmt not in 'hHvV':
-            raise ValueError, "format must be one 'h', 'H', 'v' or 'V'"
+            raise ValueError("format must be one 'h', 'H', 'v' or 'V'")
 
         if area[2] >= area[0]:
-            raise ValueError, "x0 >= x1"
+            raise ValueError("x0 >= x1")
 
         if area[1] >= area[3]:
-            raise ValueError, "y0 >= y1"
+            raise ValueError("y0 >= y1")
 
         self.__class__.__dict__['grapics_' + fmt]((area[0], area[1]), data)
 
@@ -181,7 +177,7 @@ class Noritake:
                 self.image.putpixel((pos[0], pos[1] + i), bw(v & bit))
                 bit = bit >> 1
         except:
-           print pos
+           print(pos)
            raise
 
     def put_horizontal(self, pos, v):
@@ -191,7 +187,7 @@ class Noritake:
                 self.image.putpixel((pos[0] + i, pos[1]), bw(v & bit))
                 bit = bit >> 1
         except:
-            print pos
+            print(pos)
             raise
 
     def graphics_V(self, pos, data):
@@ -238,7 +234,7 @@ def generate_fonts(fname, iname):
         f.write('#define MAX_GLYPHS %d\n\n' % len(chars))        
         f.write(struct_glyph)
 
-        for n, gl in glyphs.iteritems():
+        for n, gl in glyphs.items():
             f.write("const extern struct Glyph glyphs_%s[] PROGMEM;\n" % n)
 
         f.write('\n#endif // %s\n' % guard)
@@ -247,8 +243,8 @@ def generate_fonts(fname, iname):
     with open(fname, "w") as f:
         f.write('#include "%s"\n\n' % iname)        
 
-        for n, gl in glyphs.iteritems():
-            keys = gl.keys()
+        for n, gl in glyphs.items():
+            keys = list(gl.keys())
             keys.sort()
 
             for c in keys:
@@ -286,7 +282,7 @@ if __name__ == '__main__':
             display.put_string((0, 0), options.line1, 'huge')
 
         if options.line2:
-            display.put_string((40, 4), options.line2, 'medium')
+            display.put_string((46, 4), options.line2, 'medium')
 
         if options.out:
             display.image.save(options.out)
