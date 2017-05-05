@@ -42,7 +42,7 @@
 typedef _SPI<Pin::SPI_SCK, Pin::SPI_MISO, Pin::SPI_MOSI, Pin::SPI_SS> SPI_D;
 
 typedef _Noritake<SPI_D, 112> Display;
-typedef _Quadrature<Pin::D5, Pin::D6, 0, 127> Quadrature;
+typedef _Quadrature<Pin::C1, Pin::D5, 19, 80> Quadrature;
 
 typedef Pin::C0 DimmerOut;
 typedef Pin::D4 DimmerSense;
@@ -136,7 +136,7 @@ int main(void)
     Arduino::init();
     Quadrature::init();
 
-    uint16_t starttime = Clock16::millis();
+    // uint16_t starttime = Clock16::millis();
     
     DimmerOut::modeOutput();
     DimmerOut::clear();
@@ -155,10 +155,17 @@ int main(void)
     Display::clear();
     Display::on(false);
 
-    char buf[4] = { 0 };
-    itoa(23, buf, 10);
-    Display::string(0, 0, buf, glyphs_medium);
+    char buf[5] = { 0 };
+    itoa(29, buf, 10);
+    strcat(buf, "\xb0");
+    Display::string(0, 0, (byte*)buf, glyphs_huge);
 
+    itoa(23, buf, 10);
+    strcat(buf, "\xb0");
+    Display::string(48, 8, (byte*)buf, glyphs_medium);
+
+    
+    
     for (;;) {
 
 		set_sleep_mode(SLEEP_MODE_IDLE);

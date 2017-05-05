@@ -16,7 +16,7 @@ public:
         SPI_::transfer(c, period);
     }
 
-    static void send(const char *data, int period) {
+    static void send(const byte *data, int period) {
         for (; *data != 0; ++data) {
             SPI_::transfer(*data, period);
         }
@@ -93,15 +93,15 @@ public:
         }
     }
 
-	static byte character(byte x, byte y, char c, const Glyph *font) {
+	static byte character(byte x, byte y, byte c, const Glyph *font) {
         const Glyph *g = glyph_bsearch(c, font);
 
         if (!g)
+        {
             return x;
-
-        byte size = pgm_read_byte(&g->size);
-        byte sx = (size & 0xf0) >> 4;
-        byte sy = (size & 0x0f);
+        }
+        byte sx = pgm_read_byte(&g->width);
+        byte sy = pgm_read_byte(&g->height);
 
         const char *ps = (const char*)pgm_read_word(&g->bitmap);
         byte w = (sx / 8) + 1;
@@ -115,7 +115,7 @@ public:
         return x + sx;
     }
 
-	static byte string(byte x1, byte y1, const char *s, const Glyph *font) {
+	static byte string(byte x1, byte y1, const byte *s, const Glyph *font) {
         for(; *s; ++s)
         {
             x1 = character(x1, y1, *s, font); 
@@ -124,7 +124,7 @@ public:
         return x1;
     }
 
-	static byte string_P(byte x1, byte y1, const char *s, const Glyph *font) {
+	static byte string_P(byte x1, byte y1, const byte *s, const Glyph *font) {
         for(byte i = 0;;++i)
         {
             byte v = pgm_read_byte(s + i);
@@ -137,78 +137,9 @@ public:
         return x1;
     }
 
-	// Volume bar
-	static void volume(byte v) {
-        const byte x_offset = 0;
-        const byte y_offset = 11;
-        const byte height = 4;
-        // Each digit is 4 pixel space (including 1 pixel space)
-        const byte digit_width = 4;
-        const byte levelwidth = 3 * digit_width;
-        const byte borderwidth = 4;
-        // width of the bar, excluding borders, right margin is 2
-        const unsigned barwidth = width_ - levelwidth - borderwidth - 2;
-
-        const unsigned vpos = (unsigned)v * height * barwidth / 128;
-
-        // the borders are 2 pixel each
-        // 0x80 is the left border
-        byte bar[(barwidth + borderwidth - 1) / 8 + 1] = { 0x80 };
-        // start after the left border
-        byte bit = 0x20;
-        byte k = 0;
-
-        // right border
-        bar[(barwidth + borderwidth - 1) / 8] = 
-            0x80 >> (((barwidth + borderwidth - 1) % 8) - 1);
-
-        for (unsigned i = 0; i < vpos / height; ++i)
-        {
-            bar[k] |= bit;
-            bit >>= 1;
-            if (bit == 0)
-            {
-                bit = 0x80;
-                ++k;
-            }
-        }
-
-        const byte rem = height - (vpos % height);
-
-        for (byte i = 0; i < rem; ++i)
-        {
-            graphics(x_offset, y_offset + i, x_offset + 8 * sizeof(bar)-1, 
-                     y_offset + i, 'H',
-                     sizeof(bar), (const char *)bar);
-        }
-      
-        // extend the bar by one pixel
-        bar[k] |= bit;
-        
-        for (byte i = rem; i < height; ++i)
-        {
-            graphics(x_offset, y_offset + i, x_offset + 8 * sizeof(bar)-1, 
-                     y_offset + i, 'H',
-                     sizeof(bar), (const char *)bar);
-        }
-
-        // Level display
-
-        char buf[4] = { 0, 0, 0, 0 };
-        itoa(v, buf, 10);
-
-        // Clear level
-        area(width_ - levelwidth, y_offset - 1, 
-             width_ - 1, y_offset + 4, 'C');
-
-        // Display the level
-        string(width_ - levelwidth, y_offset - 1, buf, glyphs_4x6);
-    }
-
-	static const Glyph* glyph_bsearch(char key, const Glyph *base)
+	static const Glyph* glyph_bsearch(byte key, const Glyph *base)
     { 
-        byte l, u, idx;
-        char v;
+        byte l, u, idx, v;
         l = 0;
         u = MAX_GLYPHS;
         while (l < u)
@@ -226,7 +157,7 @@ public:
         return 0;
     }
 
-	static byte glyph_width(const char *s, const Glyph *font) {
+	static byte glyph_width(const byte *s, const Glyph *font) {
         const Glyph *g;
         byte w = 0;
         
@@ -235,8 +166,8 @@ public:
             g = glyph_bsearch(*s, font);
             if (g)
             {
-                byte size = pgm_read_byte(&g->size);
-                w += (size & 0xf0) >> 4;			
+                byte width = pgm_read_byte(&g->width);
+                w += width;
             }
         }
 

@@ -15,7 +15,8 @@ chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():
 struct_glyph = """struct Glyph
 {
     uint8_t code;
-    uint16_t size;
+    uint8_t width;
+    uint8_t height;
     const char *bitmap;
 };
 
@@ -86,16 +87,16 @@ class Glyph:
     def update_vdata(self):
         self.vdata = []
         pixels = self.image.load()
-        # print 'Glyph %s: %s (%s)' % (self.char, self.size, self.image.size)
+        # print('Glyph %s: %s' % (self.char, self.size))
         for o in range(((self.size[0] - 1) // 8) + 1):
             r = []
             upper = (o + 1) * 8
             if o == self.size[0] // 8:
                 upper = min(self.size[0], upper)
-            # print '  %d, %d' % (o, upper)
+            # print('  %d, %d' % (o, upper))
             for p in range(self.size[1]):
                 l = [pixels[i, p] for i in range(o * 8, upper)]
-                # print '    %s' % (l)
+                # print('    %s' % (l))
                 r.append(convert_byte(l))
             self.vdata.append(r)
 
@@ -117,7 +118,8 @@ class Glyph:
             char_literal = hex(ord(self.char))
         
         s = indent * ' ' + "{ " + char_literal + ", "
-        s = s + '0x%02x, ' % ((self.size[0] << 4) + self.size[1])
+        s = s + str(self.size[0]) + ", "
+        s = s + str(self.size[1]) + ", "
         s = s + 'bm_%s_%02x, },\n' % (self.name, ord(self.char))
         return s
 
