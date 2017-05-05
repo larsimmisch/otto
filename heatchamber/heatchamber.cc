@@ -1,29 +1,3 @@
-/*
-    Basic Pin setup:
-          ------------                      
-          |ARDUINO  B5|-> SCLK (N-2)
-          |         B4|-> MISO (N-6)
-          |         B3|-> MOSI (N-4)
-          |         B2|-> /SS  (N-3)
-          |         B1|->
-          |         B0|-> 
-          |         D7|-> 
-          |         D6|-> QE2
-          |a5       D5|-> QE1
-          |a4       D4|-> QEB
-          |a3       D3|-> 
-          |a2       D2|-> 
-          |a1       D1|->
-          |a0       D0|->
-          -------------
-
-
-    Pinout of the volume control is:
-
-	6 5 + 4 3 (1 - red)
-    7 8 + 1 2
-*/
-
 #include <arduino--.h>
 #include <spi.h>
 #define CLOCK_NO_ISR
@@ -42,7 +16,7 @@
 typedef _SPI<Pin::SPI_SCK, Pin::SPI_MISO, Pin::SPI_MOSI, Pin::SPI_SS> SPI_D;
 
 typedef _Noritake<SPI_D, 112> Display;
-typedef _Quadrature<Pin::C1, Pin::D5, 19, 80> Quadrature;
+typedef _Quadrature<Pin::D7, Pin::C3, 20, 80> Quadrature;
 
 typedef Pin::C0 DimmerOut;
 typedef Pin::D4 DimmerSense;
@@ -164,14 +138,25 @@ int main(void)
     strcat(buf, "\xb0");
     Display::string(48, 8, (byte*)buf, glyphs_medium);
 
-    
+    Quadrature::position(29);
+
+    int temperature = Quadrature::position();
     
     for (;;) {
 
 		set_sleep_mode(SLEEP_MODE_IDLE);
 		sleep_enable();
 		sleep_mode();
-		
+
+        if (temperature != Quadrature::position())
+        {
+            temperature = Quadrature::position();
+            
+            itoa(temperature, buf, 10);
+            strcat(buf, "\xb0");
+            Display::string(0, 0, (byte*)buf, glyphs_huge);
+        }
+        
 		if (!is_calibrated && ac_crossings >= CALIBRATION_CYCLES)
 		{
             trigger = t2_max;
