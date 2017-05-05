@@ -10,7 +10,7 @@ from PIL import Image
 # >>> a = Glyph('a', 'medium')
 # a.show()
 
-chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():., °'
+chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():.,- °'
 
 struct_glyph = """struct Glyph
 {

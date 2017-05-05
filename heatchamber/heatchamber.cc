@@ -10,13 +10,14 @@
 
 #define CALIBRATION_CYCLES 20
 #if (CALIBRATION_CYCLES > UINT_MAX/500)
-#error Frequency computation will overflow. 
+#error Frequency computation will overflow.
 #endif
 
 typedef _SPI<Pin::SPI_SCK, Pin::SPI_MISO, Pin::SPI_MOSI, Pin::SPI_SS> SPI_D;
 
 typedef _Noritake<SPI_D, 112> Display;
-typedef _Quadrature<Pin::D7, Pin::C3, 20, 80> Quadrature;
+// values from the quad encoder are scaled with a factor of 2
+typedef _Quadrature<Pin::D7, Pin::C3, 20 * 2, 80 * 2> Quadrature;
 
 typedef Pin::C0 DimmerOut;
 typedef Pin::D4 DimmerSense;
@@ -103,45 +104,62 @@ ISR(PCINT2_vect)
 	}
 }
 
+void display_temp_scaled(byte value, byte x, byte y, const Glyph *font)
+{
+    char buf[5] = { 0 };
+
+    if (value >= 200) {
+        Display::string(x, y, (const byte*)"--.-", font);
+        return;
+    }
+
+    itoa(value / 2, buf, 10);
+
+    if (value % 2) {
+        strcat(buf, ".5");
+    }
+    else {
+        strcat(buf, ".0");
+    }
+
+    strcat(buf, "\xb0");
+    Display::string(x, y, (byte*)buf, font);
+}
+
 int main(void)
 {
     bool is_calibrated = false;
-    
+
     Arduino::init();
     Quadrature::init();
 
     // uint16_t starttime = Clock16::millis();
-    
+
     DimmerOut::modeOutput();
     DimmerOut::clear();
     DimmerSense::modeInput();
     DimmerSense::enableChangeInterrupt();
-    
+
     Timer2::prescaler1();
     Timer2::modeNormal();
     Timer2::enableOverflowInterrupt();
     // Use internal clock for timer2
 	ASSR |= (1<<AS2);
-    
+
     SPI_D::init(1<<SPR0, true);
 
     Clock16::sleep(250);
     Display::clear();
     Display::on(false);
 
-    char buf[5] = { 0 };
-    itoa(29, buf, 10);
-    strcat(buf, "\xb0");
-    Display::string(0, 0, (byte*)buf, glyphs_huge);
+    Quadrature::position(29 * 2);
 
-    itoa(23, buf, 10);
-    strcat(buf, "\xb0");
-    Display::string(48, 8, (byte*)buf, glyphs_medium);
+    display_temp_scaled(Quadrature::position(), 0, 0, glyphs_huge);
 
-    Quadrature::position(29);
+    display_temp_scaled(23 * 2, 66, 8, glyphs_medium);
 
     int temperature = Quadrature::position();
-    
+
     for (;;) {
 
 		set_sleep_mode(SLEEP_MODE_IDLE);
@@ -151,12 +169,10 @@ int main(void)
         if (temperature != Quadrature::position())
         {
             temperature = Quadrature::position();
-            
-            itoa(temperature, buf, 10);
-            strcat(buf, "\xb0");
-            Display::string(0, 0, (byte*)buf, glyphs_huge);
+
+            display_temp_scaled(temperature, 0, 0, glyphs_huge);
         }
-        
+
 		if (!is_calibrated && ac_crossings >= CALIBRATION_CYCLES)
 		{
             trigger = t2_max;
@@ -164,7 +180,7 @@ int main(void)
 
 #ifdef DEBUG
            	uint16_t = Clock16::millis() - starttime;
-            
+
             Serial.print("t2: ");
             Serial.println(t2);
 
@@ -180,7 +196,7 @@ int main(void)
             Serial.println(t);
 #endif
 		}
-        
+
     }
 
     return 0;
