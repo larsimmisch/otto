@@ -2,7 +2,7 @@ include Makefile.local
 
 OPTIMIZE = -O2 -Os
 DEFS = -I /usr/local/opt/avr-libc/avr/include -I ../arduino-- -DF_CPU=$(CPU_FREQUENCY)
-LIBS = -B /usr/local/opt/avr-libc/avr/lib
+LIBS = -B /usr/local/opt/avr-libc/avr/lib -lm
 CC = avr-gcc
 CXX = avr-g++
 AR = avr-ar
@@ -13,7 +13,7 @@ VPATH=.
 
 CFLAGS = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
 CXXFLAGS = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
-LDFLAGS = -Wl,-Map,$@.map $(LIBS)
+LDFLAGS = -Wl,-Map,$@.map $(LIBS) -Wl,-u,vfprintf -lprintf_flt
 
 BIN = heatchamber.bin
 

@@ -1,5 +1,6 @@
 #include <arduino--.h>
 #include <spi.h>
+#include <onewire.h>
 #define CLOCK_NO_ISR
 #include <clock16.h>
 #include <quadrature.h>
@@ -13,11 +14,15 @@
 #error Frequency computation will overflow.
 #endif
 
+const int QUAD_SCALE = 10;
+
 typedef _SPI<Pin::SPI_SCK, Pin::SPI_MISO, Pin::SPI_MOSI, Pin::SPI_SS> SPI_D;
 
 typedef _Noritake<SPI_D, 112> Display;
-// values from the quad encoder are scaled with a factor of 2
-typedef _Quadrature<Pin::D7, Pin::C3, 20 * 2, 80 * 2> Quadrature;
+// values from the quad encoder are scaled with a factor of QUAD_SCALE
+typedef _Quadrature<Pin::D7, Pin::C3, 20 * QUAD_SCALE, 80 * QUAD_SCALE> Quadrature;
+
+static Buttons<Pin::D4> OneWireButtons;
 
 typedef Pin::C0 DimmerOut;
 typedef Pin::D4 DimmerSense;
@@ -104,25 +109,32 @@ ISR(PCINT2_vect)
 	}
 }
 
-void display_temp_scaled(byte value, byte x, byte y, const Glyph *font)
+float convert_ds18b20(uint16_t t)
 {
-    char buf[5] = { 0 };
+    float v = (t & 0xf) / 16.0 + ((t & 0x7f0) >> 4);
 
-    if (value >= 200) {
+    if (t & 0xf000) {
+        return -v;
+    }
+
+    return v;
+}
+
+void display_temp(float value, byte x, byte y, const Glyph *font)
+{
+    char buf[6] = { 0 };
+
+    if (value >= 100.0 || value <= -10.0) {
         Display::string(x, y, (const byte*)"--.-", font);
         return;
     }
 
-    itoa(value / 2, buf, 10);
-
-    if (value % 2) {
-        strcat(buf, ".5");
-    }
-    else {
-        strcat(buf, ".0");
+    if (value >= 0.0 && value < 10.0) {
+        snprintf(buf, sizeof(buf), " %.1f\xb0", value);
     }
 
-    strcat(buf, "\xb0");
+    snprintf(buf, sizeof(buf), "%.1f\xb0", value);
+    
     Display::string(x, y, (byte*)buf, font);
 }
 
@@ -132,6 +144,9 @@ int main(void)
 
     Arduino::init();
     Quadrature::init();
+
+    OneWireButtons.Init();
+    OneWireButtons.Scan();
 
     // uint16_t starttime = Clock16::millis();
 
@@ -152,13 +167,16 @@ int main(void)
     Display::clear();
     Display::on(false);
 
-    Quadrature::position(29 * 2);
+    Quadrature::position(29 * QUAD_SCALE);
 
-    display_temp_scaled(Quadrature::position(), 0, 0, glyphs_huge);
+    display_temp(Quadrature::position() / (float)QUAD_SCALE, 0, 0, glyphs_huge);
 
-    display_temp_scaled(23 * 2, 66, 8, glyphs_medium);
+    OneWireButtons.GetTemperatures();
 
-    int temperature = Quadrature::position();
+    int selected = Quadrature::position();
+    uint16_t temp = OneWireButtons[0].Temperature();
+    
+    display_temp(convert_ds18b20(temp), 66, 8, glyphs_medium);
 
     for (;;) {
 
@@ -166,13 +184,21 @@ int main(void)
 		sleep_enable();
 		sleep_mode();
 
-        if (temperature != Quadrature::position())
+        if (selected != Quadrature::position())
         {
-            temperature = Quadrature::position();
+            selected = Quadrature::position();
 
-            display_temp_scaled(temperature, 0, 0, glyphs_huge);
+            display_temp(selected / (float)QUAD_SCALE, 0, 0, glyphs_huge);
         }
 
+        OneWireButtons.GetTemperatures();
+
+        if (temp != OneWireButtons[0].Temperature())
+        {
+            temp = OneWireButtons[0].Temperature();
+            display_temp(convert_ds18b20(temp), 66, 8, glyphs_medium);
+        }
+                
 		if (!is_calibrated && ac_crossings >= CALIBRATION_CYCLES)
 		{
             trigger = t2_max;
