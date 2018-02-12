@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.4">
+<eagle version="8.6.1">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
+<setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
@@ -7460,69 +7461,6 @@ This library includes the former libraries ribcon.lbr and ribcon4.lbr.&lt;p&gt;
 <rectangle x1="4.953" y1="2.7178" x2="5.207" y2="2.9718" layer="21"/>
 <text x="8.89" y="-5.08" size="1.27" layer="27" ratio="10" align="bottom-right">&gt;VALUE</text>
 </package>
-<package name="CON14L">
-<description>&lt;b&gt;CONNECTOR&lt;/b&gt;</description>
-<wire x1="8.89" y1="-4.445" x2="-8.89" y2="-4.445" width="0.1524" layer="21"/>
-<wire x1="-8.89" y1="-3.4798" x2="-8.89" y2="-4.445" width="0.1524" layer="21"/>
-<wire x1="8.89" y1="-3.4798" x2="8.89" y2="-4.445" width="0.1524" layer="21"/>
-<wire x1="8.0518" y1="2.3368" x2="7.1882" y2="2.3368" width="0.1524" layer="21"/>
-<wire x1="7.1882" y1="2.3368" x2="7.62" y2="3.175" width="0.1524" layer="21"/>
-<wire x1="7.62" y1="3.175" x2="8.0518" y2="2.3368" width="0.1524" layer="21"/>
-<wire x1="7.62" y1="3.175" x2="7.62" y2="2.921" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="3.5052" x2="-10.541" y2="3.5052" width="0.1524" layer="21"/>
-<wire x1="-8.89" y1="-3.4798" x2="8.89" y2="-3.4798" width="0.1524" layer="21"/>
-<wire x1="11.4046" y1="-3.4798" x2="11.4046" y2="-2.159" width="0.1524" layer="21"/>
-<wire x1="11.4046" y1="3.5052" x2="10.541" y2="3.5052" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="3.5052" x2="-11.43" y2="2.159" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="-3.4798" x2="-10.541" y2="-3.4798" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="3.5052" x2="10.541" y2="2.159" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="2.159" x2="11.4046" y2="2.159" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="0.635" x2="11.4046" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="11.4046" y1="2.159" x2="11.4046" y2="3.5052" width="0.1524" layer="21"/>
-<wire x1="11.4046" y1="0.635" x2="11.4046" y2="2.159" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="-2.159" x2="11.4046" y2="-2.159" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="-2.159" x2="10.541" y2="-3.4798" width="0.1524" layer="21"/>
-<wire x1="11.4046" y1="-2.159" x2="11.4046" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="-0.635" x2="11.4046" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="11.4046" y1="-0.635" x2="11.4046" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="8.89" y1="-3.4798" x2="10.541" y2="-3.4798" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="0.635" x2="10.541" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="-10.541" y1="3.5052" x2="-10.541" y2="2.159" width="0.1524" layer="21"/>
-<wire x1="-10.541" y1="3.5052" x2="-11.43" y2="3.5052" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="2.159" x2="-10.541" y2="2.159" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="0.635" x2="-10.541" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="-10.541" y1="0.635" x2="-10.541" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="-0.635" x2="-10.541" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="-2.159" x2="-10.541" y2="-2.159" width="0.1524" layer="21"/>
-<wire x1="-10.541" y1="-2.159" x2="-10.541" y2="-3.4798" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="0.635" x2="-11.43" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="2.159" x2="-11.43" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="-0.635" x2="-11.43" y2="-2.159" width="0.1524" layer="21"/>
-<wire x1="-11.43" y1="-2.159" x2="-11.43" y2="-3.4798" width="0.1524" layer="21"/>
-<wire x1="-10.541" y1="-3.4798" x2="-8.89" y2="-3.4798" width="0.1524" layer="21"/>
-<wire x1="10.541" y1="-3.4798" x2="11.4046" y2="-3.4798" width="0.1524" layer="21"/>
-<pad name="1" x="7.62" y="1.27" drill="0.9144"/>
-<pad name="2" x="7.62" y="-1.27" drill="0.9144" shape="octagon"/>
-<pad name="3" x="5.08" y="1.27" drill="0.9144" shape="octagon"/>
-<pad name="4" x="5.08" y="-1.27" drill="0.9144" shape="octagon"/>
-<pad name="5" x="2.54" y="1.27" drill="0.9144" shape="octagon"/>
-<pad name="6" x="2.54" y="-1.27" drill="0.9144" shape="octagon"/>
-<pad name="7" x="0" y="1.27" drill="0.9144" shape="octagon"/>
-<pad name="8" x="0" y="-1.27" drill="0.9144" shape="octagon"/>
-<pad name="9" x="-2.54" y="1.27" drill="0.9144" shape="octagon"/>
-<pad name="10" x="-2.54" y="-1.27" drill="0.9144" shape="octagon"/>
-<pad name="11" x="-5.08" y="1.27" drill="0.9144" shape="octagon"/>
-<pad name="12" x="-5.08" y="-1.27" drill="0.9144" shape="octagon"/>
-<pad name="13" x="-7.62" y="1.27" drill="0.9144" shape="octagon"/>
-<pad name="14" x="-7.62" y="-1.27" drill="0.9144" shape="octagon"/>
-<text x="-8.255" y="3.6068" size="1.778" layer="25" ratio="10">&gt;NAME</text>
-<text x="8.89" y="0.635" size="1.524" layer="21" ratio="10">1</text>
-<text x="-8.89" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
-<rectangle x1="7.366" y1="2.5146" x2="7.874" y2="2.7686" layer="21"/>
-<rectangle x1="7.62" y1="2.3876" x2="8.001" y2="2.5146" layer="21"/>
-<rectangle x1="7.239" y1="2.3876" x2="7.62" y2="2.5146" layer="21"/>
-<rectangle x1="7.493" y1="2.7178" x2="7.747" y2="2.9718" layer="21"/>
-</package>
 </packages>
 <symbols>
 <symbol name="05-2">
@@ -7553,42 +7491,6 @@ This library includes the former libraries ribcon.lbr and ribcon4.lbr.&lt;p&gt;
 <pin name="9" x="7.62" y="5.08" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
 <pin name="10" x="-7.62" y="5.08" visible="pad" length="middle" direction="pas" swaplevel="1"/>
 </symbol>
-<symbol name="07-2">
-<wire x1="3.81" y1="-10.16" x2="-3.81" y2="-10.16" width="0.4064" layer="94"/>
-<wire x1="-3.81" y1="10.16" x2="-3.81" y2="-10.16" width="0.4064" layer="94"/>
-<wire x1="-3.81" y1="10.16" x2="3.81" y2="10.16" width="0.4064" layer="94"/>
-<wire x1="3.81" y1="-10.16" x2="3.81" y2="10.16" width="0.4064" layer="94"/>
-<circle x="1.905" y="-7.62" radius="0.635" width="0.254" layer="94"/>
-<circle x="1.905" y="-5.08" radius="0.635" width="0.254" layer="94"/>
-<circle x="1.905" y="-2.54" radius="0.635" width="0.254" layer="94"/>
-<circle x="1.905" y="0" radius="0.635" width="0.254" layer="94"/>
-<circle x="1.905" y="2.54" radius="0.635" width="0.254" layer="94"/>
-<circle x="1.905" y="5.08" radius="0.635" width="0.254" layer="94"/>
-<circle x="1.905" y="7.62" radius="0.635" width="0.254" layer="94"/>
-<circle x="-1.905" y="-7.62" radius="0.635" width="0.254" layer="94"/>
-<circle x="-1.905" y="-5.08" radius="0.635" width="0.254" layer="94"/>
-<circle x="-1.905" y="-2.54" radius="0.635" width="0.254" layer="94"/>
-<circle x="-1.905" y="0" radius="0.635" width="0.254" layer="94"/>
-<circle x="-1.905" y="2.54" radius="0.635" width="0.254" layer="94"/>
-<circle x="-1.905" y="5.08" radius="0.635" width="0.254" layer="94"/>
-<circle x="-1.905" y="7.62" radius="0.635" width="0.254" layer="94"/>
-<text x="-3.81" y="-12.7" size="1.778" layer="96">&gt;VALUE</text>
-<text x="-3.81" y="10.922" size="1.778" layer="95">&gt;NAME</text>
-<pin name="1" x="7.62" y="-7.62" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="2" x="-7.62" y="-7.62" visible="pad" length="middle" direction="pas" swaplevel="1"/>
-<pin name="3" x="7.62" y="-5.08" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="4" x="-7.62" y="-5.08" visible="pad" length="middle" direction="pas" swaplevel="1"/>
-<pin name="5" x="7.62" y="-2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="6" x="-7.62" y="-2.54" visible="pad" length="middle" direction="pas" swaplevel="1"/>
-<pin name="7" x="7.62" y="0" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="8" x="-7.62" y="0" visible="pad" length="middle" direction="pas" swaplevel="1"/>
-<pin name="9" x="7.62" y="2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="10" x="-7.62" y="2.54" visible="pad" length="middle" direction="pas" swaplevel="1"/>
-<pin name="11" x="7.62" y="5.08" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="12" x="-7.62" y="5.08" visible="pad" length="middle" direction="pas" swaplevel="1"/>
-<pin name="13" x="7.62" y="7.62" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="14" x="-7.62" y="7.62" visible="pad" length="middle" direction="pas" swaplevel="1"/>
-</symbol>
 </symbols>
 <devicesets>
 <deviceset name="CON10L" prefix="CON" uservalue="yes">
@@ -7601,40 +7503,6 @@ This library includes the former libraries ribcon.lbr and ribcon4.lbr.&lt;p&gt;
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="10" pad="10"/>
-<connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
-<connect gate="G$1" pin="4" pad="4"/>
-<connect gate="G$1" pin="5" pad="5"/>
-<connect gate="G$1" pin="6" pad="6"/>
-<connect gate="G$1" pin="7" pad="7"/>
-<connect gate="G$1" pin="8" pad="8"/>
-<connect gate="G$1" pin="9" pad="9"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="MF" value="" constant="no"/>
-<attribute name="MPN" value="" constant="no"/>
-<attribute name="OC_FARNELL" value="unknown" constant="no"/>
-<attribute name="OC_NEWARK" value="unknown" constant="no"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="CON14L" prefix="CON" uservalue="yes">
-<description>&lt;b&gt;CONNECTOR&lt;/b&gt;</description>
-<gates>
-<gate name="G$1" symbol="07-2" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="CON14L">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="10" pad="10"/>
-<connect gate="G$1" pin="11" pad="11"/>
-<connect gate="G$1" pin="12" pad="12"/>
-<connect gate="G$1" pin="13" pad="13"/>
-<connect gate="G$1" pin="14" pad="14"/>
 <connect gate="G$1" pin="2" pad="2"/>
 <connect gate="G$1" pin="3" pad="3"/>
 <connect gate="G$1" pin="4" pad="4"/>
@@ -8949,10 +8817,8 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="P+1" library="supply1" deviceset="+5V" device=""/>
 <part name="P+4" library="supply1" deviceset="+5V" device=""/>
-<part name="CON2" library="con-harting-lars" deviceset="CON14L" device="" value="Autosense"/>
 <part name="P+10" library="supply1" deviceset="+5V" device=""/>
 <part name="GND14" library="supply1" deviceset="GND" device=""/>
-<part name="AGND1" library="supply1" deviceset="AGND" device=""/>
 <part name="AGND2" library="supply1" deviceset="AGND" device=""/>
 <part name="K1" library="relay" deviceset="G6H2-100" device=""/>
 <part name="P+11" library="supply1" deviceset="+5V" device=""/>
@@ -8969,6 +8835,7 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <part name="P+14" library="supply1" deviceset="+5V" device=""/>
 <part name="SS" library="SparkFun-Connectors" deviceset="M01" device="PTH" value="M01PTH"/>
 <part name="JP5" library="SparkFun" deviceset="M02" device="PTH" value="aref"/>
+<part name="CON2" library="con-harting-lars" deviceset="CON10L" device="" value="Channels"/>
 </parts>
 <sheets>
 <sheet>
@@ -9038,10 +8905,8 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <instance part="GND12" gate="1" x="60.96" y="109.22"/>
 <instance part="P+1" gate="1" x="50.8" y="160.02" rot="R90"/>
 <instance part="P+4" gate="1" x="50.8" y="121.92" rot="R90"/>
-<instance part="CON2" gate="G$1" x="142.24" y="167.64"/>
-<instance part="P+10" gate="1" x="157.48" y="175.26" rot="R270"/>
-<instance part="GND14" gate="1" x="129.54" y="177.8" rot="R180"/>
-<instance part="AGND1" gate="VR1" x="119.38" y="175.26" rot="R180"/>
+<instance part="P+10" gate="1" x="157.48" y="172.72" rot="R270"/>
+<instance part="GND14" gate="1" x="129.54" y="175.26" rot="R180"/>
 <instance part="AGND2" gate="VR1" x="33.02" y="53.34" rot="R270"/>
 <instance part="K1" gate="1" x="162.56" y="96.52"/>
 <instance part="K1" gate="2" x="177.8" y="96.52"/>
@@ -9060,6 +8925,7 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <instance part="P+14" gate="1" x="139.7" y="60.96" rot="R180"/>
 <instance part="SS" gate="G$1" x="73.66" y="15.24"/>
 <instance part="JP5" gate="G$1" x="17.78" y="66.04"/>
+<instance part="CON2" gate="G$1" x="142.24" y="167.64" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -9183,11 +9049,6 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <junction x="60.96" y="154.94"/>
 </segment>
 <segment>
-<pinref part="GND14" gate="1" pin="GND"/>
-<pinref part="CON2" gate="G$1" pin="14"/>
-<wire x1="129.54" y1="175.26" x2="134.62" y2="175.26" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="I2C2" gate="G$1" pin="2"/>
 <pinref part="GND15" gate="1" pin="GND"/>
 <wire x1="195.58" y1="91.44" x2="195.58" y2="83.82" width="0.1524" layer="91"/>
@@ -9201,6 +9062,11 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <pinref part="JP2" gate="G$1" pin="3"/>
 <pinref part="GND3" gate="1" pin="GND"/>
 <wire x1="111.76" y1="53.34" x2="111.76" y2="43.18" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND14" gate="1" pin="GND"/>
+<pinref part="CON2" gate="G$1" pin="1"/>
+<wire x1="129.54" y1="172.72" x2="134.62" y2="172.72" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -9273,11 +9139,6 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <junction x="149.86" y="124.46"/>
 </segment>
 <segment>
-<pinref part="CON2" gate="G$1" pin="13"/>
-<pinref part="P+10" gate="1" pin="+5V"/>
-<wire x1="149.86" y1="175.26" x2="154.94" y2="175.26" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="K1" gate="1" pin="2"/>
 <pinref part="P+11" gate="1" pin="+5V"/>
 <wire x1="162.56" y1="91.44" x2="162.56" y2="86.36" width="0.1524" layer="91"/>
@@ -9301,6 +9162,11 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <wire x1="144.78" y1="71.12" x2="139.7" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="P+14" gate="1" pin="+5V"/>
 <wire x1="139.7" y1="71.12" x2="139.7" y2="63.5" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="CON2" gate="G$1" pin="2"/>
+<pinref part="P+10" gate="1" pin="+5V"/>
+<wire x1="149.86" y1="172.72" x2="154.94" y2="172.72" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="MOSI" class="0">
@@ -9535,11 +9401,6 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 </net>
 <net name="AGND" class="0">
 <segment>
-<pinref part="AGND1" gate="VR1" pin="AGND"/>
-<pinref part="CON2" gate="G$1" pin="12"/>
-<wire x1="119.38" y1="172.72" x2="134.62" y2="172.72" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="IC1" gate="1" pin="AGND"/>
 <wire x1="38.1" y1="53.34" x2="35.56" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="AGND2" gate="VR1" pin="AGND"/>
@@ -9651,36 +9512,29 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <net name="OUT8" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DRAIN0"/>
-<pinref part="CON2" gate="G$1" pin="10"/>
 <wire x1="96.52" y1="170.18" x2="134.62" y2="170.18" width="0.1524" layer="91"/>
+<pinref part="CON2" gate="G$1" pin="3"/>
 </segment>
 </net>
 <net name="OUT9" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DRAIN1"/>
-<pinref part="CON2" gate="G$1" pin="8"/>
 <wire x1="96.52" y1="167.64" x2="134.62" y2="167.64" width="0.1524" layer="91"/>
+<pinref part="CON2" gate="G$1" pin="5"/>
 </segment>
 </net>
 <net name="OUT10" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DRAIN2"/>
-<pinref part="CON2" gate="G$1" pin="6"/>
 <wire x1="96.52" y1="165.1" x2="134.62" y2="165.1" width="0.1524" layer="91"/>
+<pinref part="CON2" gate="G$1" pin="7"/>
 </segment>
 </net>
 <net name="OUT11" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DRAIN3"/>
-<pinref part="CON2" gate="G$1" pin="4"/>
 <wire x1="96.52" y1="162.56" x2="134.62" y2="162.56" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="OUT12" class="0">
-<segment>
-<pinref part="IC2" gate="G$1" pin="DRAIN4"/>
-<pinref part="CON2" gate="G$1" pin="2"/>
-<wire x1="96.52" y1="160.02" x2="134.62" y2="160.02" width="0.1524" layer="91"/>
+<pinref part="CON2" gate="G$1" pin="9"/>
 </segment>
 </net>
 <net name="ADC0" class="0">
@@ -9690,9 +9544,9 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <label x="101.6" y="104.14" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="CON2" gate="G$1" pin="9"/>
 <wire x1="149.86" y1="170.18" x2="162.56" y2="170.18" width="0.1524" layer="91"/>
 <label x="162.56" y="170.18" size="1.778" layer="95"/>
+<pinref part="CON2" gate="G$1" pin="4"/>
 </segment>
 </net>
 <net name="ADC1" class="0">
@@ -9702,9 +9556,9 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <label x="101.6" y="101.6" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="CON2" gate="G$1" pin="7"/>
 <wire x1="149.86" y1="167.64" x2="162.56" y2="167.64" width="0.1524" layer="91"/>
 <label x="162.56" y="167.64" size="1.778" layer="95"/>
+<pinref part="CON2" gate="G$1" pin="6"/>
 </segment>
 </net>
 <net name="ADC2" class="0">
@@ -9714,9 +9568,9 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <label x="101.6" y="99.06" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="CON2" gate="G$1" pin="5"/>
 <wire x1="149.86" y1="165.1" x2="162.56" y2="165.1" width="0.1524" layer="91"/>
 <label x="162.56" y="165.1" size="1.778" layer="95"/>
+<pinref part="CON2" gate="G$1" pin="8"/>
 </segment>
 </net>
 <net name="ADC3" class="0">
@@ -9726,9 +9580,9 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <label x="101.6" y="96.52" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="CON2" gate="G$1" pin="3"/>
 <wire x1="149.86" y1="162.56" x2="162.56" y2="162.56" width="0.1524" layer="91"/>
 <label x="162.56" y="162.56" size="1.778" layer="95"/>
+<pinref part="CON2" gate="G$1" pin="10"/>
 </segment>
 </net>
 <net name="OUT13" class="0">
