@@ -53,6 +53,6 @@ clean:
 	rm -f *.o *.map *.lst *.elf *.bin fonts/fonts.c fonts/fonts.h .depend
 
 .bin_upload:
-	avrdude -F -V -p $(MCU_TARGET) -c $(AVR_PROGRAMMER) -b $(AVR_RATE) -P $(AVR_TTY) -U flash:w:$<
+	avrdude -V -p $(MCU_TARGET) -c $(AVR_PROGRAMMER) -b $(AVR_RATE) -P $(AVR_TTY) -U flash:w:$<
 
 -include .depend
