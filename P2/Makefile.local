@@ -1,5 +1,0 @@
-CPU_FREQUENCY = 16000000
-MCU_TARGET = atmega328p
-AVR_TTY = /dev/tty.usbserial-DJ00ILIE
-AVR_PROGRAMMER = arduino
-AVR_RATE = 19200

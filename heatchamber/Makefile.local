@@ -1,5 +1,5 @@
 CPU_FREQUENCY = 16000000
 MCU_TARGET = atmega328p
-AVR_TTY = /dev/tty.usbserial-FTDOMH20
+AVR_TTY = /dev/tty.usbserial-DJ00ILIE
 AVR_PROGRAMMER = arduino
-AVR_RATE = 57600
+AVR_RATE = 115200
