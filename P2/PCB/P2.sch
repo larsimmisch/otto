@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.6.1">
+<eagle version="8.7.1">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -8836,6 +8836,7 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <part name="SS" library="SparkFun-Connectors" deviceset="M01" device="PTH" value="M01PTH"/>
 <part name="JP5" library="SparkFun" deviceset="M02" device="PTH" value="aref"/>
 <part name="CON2" library="con-harting-lars" deviceset="CON10L" device="" value="Channels"/>
+<part name="P+15" library="supply1" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -8926,6 +8927,7 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <instance part="SS" gate="G$1" x="73.66" y="15.24"/>
 <instance part="JP5" gate="G$1" x="17.78" y="66.04"/>
 <instance part="CON2" gate="G$1" x="142.24" y="167.64" rot="R180"/>
+<instance part="P+15" gate="1" x="124.46" y="86.36" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -9167,6 +9169,11 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <pinref part="CON2" gate="G$1" pin="2"/>
 <pinref part="P+10" gate="1" pin="+5V"/>
 <wire x1="149.86" y1="172.72" x2="154.94" y2="172.72" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="P+15" gate="1" pin="+5V"/>
+<pinref part="JP1" gate="A" pin="3"/>
+<wire x1="127" y1="86.36" x2="134.62" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="MOSI" class="0">
