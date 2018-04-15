@@ -1,17 +1,17 @@
 /*
     Basic Pin setup:
-          ------------                      
+          ------------
           |ARDUINO  B5|-> SCLK (N-2)
           |         B4|-> MISO (N-6)
           |         B3|-> MOSI (N-4)
           |         B2|-> G
           |         B1|-> RCK
           |         B0|-> /SS  (N-3)
-          |         D7|-> 
+          |         D7|->
           |         D6|-> QE2
 I2C/SCL <-|a5       D5|-> QE1
  IR/SDA <-|a4       D4|-> QEB
- CH4   -> |a3       D3|-> 
+ CH4   -> |a3       D3|->
  CH3   -> |a2       D2|-> MB (N-9)
  CH2   -> |a1       D1|->
  CH1   -> |a0       D0|->
@@ -34,14 +34,14 @@ I2C/SCL <-|a5       D5|-> QE1
 #include "Noritake.h"
 
 typedef _SPI<Pin::SPI_SCK, Pin::SPI_MISO, Pin::SPI_MOSI, Pin::B0> SPI_D;
-typedef PushButton<Clock16, Pin::D4, 50> Button;
+typedef PushButton<Clock16, Pin::D5, 50> Button;
 
 typedef _Noritake<SPI_D, 112> Display;
-typedef _Quadrature<Pin::D5, Pin::D6, 0, 127> Quadrature;
+typedef _Quadrature<Pin::D6, Pin::D4, 0, 127> Quadrature;
 
-const char d_phono[] PROGMEM = "Phono\0";
 const char d_cd[] PROGMEM = "CD\0";
-const char d_mp3[] PROGMEM = "MP3\0";
+const char d_phono[] PROGMEM = "Phono\0";
+const char d_mp3[] PROGMEM = "AirPlay\0";
 const char d_aux[] PROGMEM = "Aux\0";
 
 ISR(TIMER0_OVF_vect)
@@ -59,11 +59,11 @@ class _CombiControl
 public:
 
     enum Output {
-        phono = 1,
-        cd = 2,
+        cd = 1,
+        phono = 2,
         mp3 = 4,
         aux = 8,
-        pwr = 16
+        pwr = 64
     };
 
     static void init(byte vol = 0) {
@@ -75,7 +75,7 @@ public:
         RCK_::modeOutput();
         RCK_::set();
 
-        state = ((pwr | phono) << 8);
+        state = ((pwr | cd) << 8);
         volume(vol, 0);
         transfer(state);
     }
@@ -83,7 +83,7 @@ public:
     static void set(byte b, bool on) {
         byte v = 1 << b;
 
-        if (on) 
+        if (on)
             state |= v;
         else
             state &= ~v;
@@ -91,7 +91,7 @@ public:
         transfer(state);
     }
 
-    static void volume(byte v, byte last) { 
+    static void volume(byte v, byte last) {
 
         byte diff = v & last;
         byte b;
@@ -104,7 +104,7 @@ public:
         else if (!v && last) {
             set(7, false);
         }
-		
+
         // set the attenuated stages first (0 bits)
         // most significant to least
         for (i = 6; i >= 0; i--) {
@@ -128,10 +128,10 @@ public:
 
     static const char * PROGMEM outputName() {
         switch (output()) {
-        case phono:
-            return d_phono;
         case cd:
             return d_cd;
+        case phono:
+            return d_phono;
         case mp3:
             return d_mp3;
         default:
@@ -145,11 +145,11 @@ public:
         return (state >> 8) & 0x0f;
     }
 
-    static const char * PROGMEM nextOutput() { 
+    static const char * PROGMEM nextOutput() {
 
         byte o = output() << 1;
         if (o > aux)
-            o = phono;
+            o = cd;
 
         state &= 0xf0ff;
         state |= o << 8;
@@ -185,7 +185,7 @@ protected:
 template<class RCK_, class G_>
 uint16_t _CombiControl<RCK_, G_>::state = 0;
 
-typedef _CombiControl<Pin::B1, Pin::B2> CombiControl;
+typedef _CombiControl<Pin::D2, Pin::D3> CombiControl;
 
 int main(void)
 {
@@ -234,10 +234,10 @@ int main(void)
             }
             else {
                 CombiControl::nextOutput();
-                
+
                 // clear the first line
                 Display::area(0, 0, Display::width - 1, 9, 'C');
-                Display::string_P(0, 0, CombiControl::outputName(), 
+                Display::string_P(0, 0, CombiControl::outputName(),
                                   glyphs_medium);
             }
         }

@@ -5,3 +5,4 @@
 *.elf
 *.lst
 *.bak
+Makefile.local
