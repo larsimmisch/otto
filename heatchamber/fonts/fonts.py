@@ -10,7 +10,7 @@ from PIL import Image
 # >>> a = Glyph('a', 'medium')
 # a.show()
 
-chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():.,- °'
+chars = '\x010123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]():.,- ï¿½~'
 
 struct_glyph = """struct Glyph
 {
@@ -50,7 +50,7 @@ class Fontfile:
         offsets = []
 
         pixels = self.image.load()
-    
+
         for i in range(self.image.size[0]):
             if pixels[i, y] != state:
                 if pixels[i, y] != 0 and state == 0:
@@ -63,13 +63,13 @@ class Fontfile:
 
     def get_glyph(self, c):
         i = ord(c)
-        
+
         nospace = self.image.crop((self.offsets[i][0], self.offset,
                                    self.offsets[i][1], self.image.size[1] - 1))
         glyph = Image.new('1', (nospace.size[0] + 1, nospace.size[1]), 255)
         glyph.paste(nospace, (0, 0))
         return glyph
-        
+
 class Glyph:
     def __init__(self, c, fontfile, name):
         self.char = c
@@ -113,10 +113,10 @@ class Glyph:
 
     def c_literal(self, indent = 4):
         char_literal = "'" + self.char + "'"
-        
+
         if ord(self.char) > 127:
             char_literal = hex(ord(self.char))
-        
+
         s = indent * ' ' + "{ " + char_literal + ", "
         s = s + str(self.size[0]) + ", "
         s = s + str(self.size[1]) + ", "
@@ -198,9 +198,9 @@ class Noritake:
         for d in data:
             self.put_vertical(pos, d)
             pos = (pos[0] + 1, pos[1])
-            
+
         return pos
-                  
+
     def graphics_v(self, pos, data):
         # Vertical data with vertical cursor
         for d in data:
@@ -224,7 +224,7 @@ class Noritake:
             pos = (pos[0], pos[1] + 1)
 
         return pos
-        
+
     def show(self):
         self.image.show()
 
@@ -234,7 +234,7 @@ def generate_fonts(fname, iname):
         f.write('#ifndef %s\n' % guard)
         f.write('#define %s\n\n' % guard)
         f.write('#include <avr/pgmspace.h>\n\n')
-        f.write('#define MAX_GLYPHS %d\n\n' % len(chars))        
+        f.write('#define MAX_GLYPHS %d\n\n' % len(chars))
         f.write(struct_glyph)
 
         for n, gl in glyphs.items():
@@ -244,7 +244,7 @@ def generate_fonts(fname, iname):
 
 
     with open(fname, "w") as f:
-        f.write('#include "%s"\n\n' % iname)        
+        f.write('#include "%s"\n\n' % iname)
 
         for n, gl in glyphs.items():
             keys = list(gl.keys())
@@ -291,4 +291,4 @@ if __name__ == '__main__':
             display.image.save(options.out)
         else:
             display.show()
-            
+

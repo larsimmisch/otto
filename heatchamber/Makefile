@@ -29,12 +29,12 @@ Noritake.h: fonts/fonts.h
 
 heatchamber.cc: fonts/fonts.c
 
-.depend: *.cc *.h 
+.depend: *.cc *.h
 	$(CC) $(DEFS) -mmcu=$(MCU_TARGET) -MM *.cc > .depend
 
 .SUFFIXES: .elf .lst .bin _upload
 
-.cc.o: 
+.cc.o:
 	$(CXX) $(CXXFLAGS) -c -o $(<:.cc=.o) $<
 
 .c.o:
@@ -49,8 +49,8 @@ heatchamber.cc: fonts/fonts.c
 .o.elf:
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
 
-clean: 
-	rm -f *.o *.map *.lst *.elf *.bin fonts/fonts.c fonts/fonts.h .depend 
+clean:
+	rm -f *.o *.map *.lst *.elf *.bin fonts/fonts.c fonts/fonts.h .depend
 
 .bin_upload:
 	avrdude -F -V -p $(MCU_TARGET) -c $(AVR_PROGRAMMER) -b $(AVR_RATE) -P $(AVR_TTY) -U flash:w:$<
