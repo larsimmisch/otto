@@ -76,7 +76,7 @@ public:
 	static void graphics(byte x1, byte y1, byte x2, byte y2, char direction,
 				  byte count, const char *data) {
         area(x1, y1, x2, y2, direction);
-        
+
         for (int i = 0; i < count; ++i)
         {
             send(data[i], 120);
@@ -86,7 +86,7 @@ public:
 	static void graphics_P(byte x1, byte y1, byte x2, byte y2, char direction,
 					byte count, const char *data) {
         area(x1, y1, x2, y2, direction);
-        
+
         for (int i = 0; i < count; ++i)
         {
             send(pgm_read_byte(data + i), 120);
@@ -104,21 +104,21 @@ public:
         byte sy = pgm_read_byte(&g->height);
 
         const char *ps = (const char*)pgm_read_word(&g->bitmap);
-        byte w = (sx / 8) + 1;
+        byte w = (sx - 1) / 8  + 1; // width in bytes
 
-        area(x, y, x + w * 8 - 1, y + sy - 1, 'h');
+        area(x, y, x + sx - 1, y + sy - 1, 'h');
         for (int i = 0; i < w * sy; ++i)
         {
             send(pgm_read_byte(ps + i), 120);
         }
-        
+
         return x + sx;
     }
 
-	static byte string(byte x1, byte y1, const byte *s, const Glyph *font) {
+	static byte string(byte x1, byte y1, const char *s, const Glyph *font) {
         for(; *s; ++s)
         {
-            x1 = character(x1, y1, *s, font); 
+            x1 = character(x1, y1, *s, font);
         }
 
         return x1;
@@ -130,22 +130,22 @@ public:
             byte v = pgm_read_byte(s + i);
             if (!v)
                 break;
-		
-            x1 = character(x1, y1, v, font); 
+
+            x1 = character(x1, y1, v, font);
         }
 
         return x1;
     }
 
 	static const Glyph* glyph_bsearch(byte key, const Glyph *base)
-    { 
+    {
         byte l, u, idx, v;
         l = 0;
         u = MAX_GLYPHS;
         while (l < u)
         {
             idx = (l + u) / 2;
-            
+
             v = pgm_read_byte(&base[idx].code);
             if (key < v)
                 u = idx;
@@ -153,14 +153,14 @@ public:
                 l = idx + 1;
             else
                 return base + idx;
-        } 
+        }
         return 0;
     }
 
 	static byte glyph_width(const byte *s, const Glyph *font) {
         const Glyph *g;
         byte w = 0;
-        
+
         for (; *s != 0; ++s)
         {
             g = glyph_bsearch(*s, font);
