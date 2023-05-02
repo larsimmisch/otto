@@ -1,6 +1,6 @@
 include Makefile.local
 
-OPTIMIZE = -O2 -Os
+OPTIMIZE = -O2 # -Os
 DEFS = -I /usr/local/opt/avr-libc/avr/include -I ../arduino-- -DF_CPU=$(CPU_FREQUENCY)
 LIBS = -B /usr/local/opt/avr-libc/avr/lib -lm
 CC = avr-gcc
@@ -40,7 +40,7 @@ all: $(BIN) $(BIN:.bin=.lst)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
 
 clean: 
-	rm -f *.o *.map *.lst *.elf *.bin fonts/fonts.c fonts/fonts.h .depend 
+	rm -f *.o *.map *.lst *.elf *.bin .depend 
 
 .bin_upload:
 	avrdude -F -V -p $(MCU_TARGET) -c $(AVR_PROGRAMMER) -B $(USBTINY_SPEED) -U flash:w:$<
