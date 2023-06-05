@@ -10,12 +10,8 @@
 #include "fonts/fonts.c"
 #include "Noritake.h"
 
-#define CALIBRATION_CYCLES 20
-#if (CALIBRATION_CYCLES > UINT_MAX/500)
-#error Frequency computation will overflow.
-#endif
-
 const int QUAD_SCALE = 10;
+const float HYSTERESIS = 0.1;
 
 typedef _SPI<Pin::SPI_SCK, Pin::SPI_MISO, Pin::SPI_MOSI, Pin::SPI_SS> SPI_D;
 
@@ -25,90 +21,8 @@ typedef _Quadrature<Pin::D7, Pin::C3, 20 * QUAD_SCALE, 80 * QUAD_SCALE> Quadratu
 
 static Buttons<Pin::D4> OneWireButtons;
 
-typedef Pin::D5 DimmerOut;
-typedef Pin::C1 DimmerSense;
-
-enum Sweep {
-	idle,
-	up,
-	down
-};
-
-volatile Sweep sweep = idle;
-volatile unsigned int ac_crossings = 0;
-volatile unsigned int t2 = 0;
-volatile unsigned int t2_max = 0;
-volatile bool ac_zero = false;
-volatile unsigned int trigger = 0;
-
-ISR(TIMER0_OVF_vect)
-{
-	Quadrature::update();
-	clock16_isr();
-}
-
-// Called 62500 times a second: 16000000 Hz / 256 = 62500 Hz
-ISR(TIMER2_OVF_vect)
-{
-	if (ac_zero) {
-		return;
-	}
-
-	++t2;
-	if (ac_crossings < CALIBRATION_CYCLES && t2 > t2_max) {
-		t2_max = t2;
-	}
-
-	// t2 == 0 is handled in PCINT1_vect
-	if (t2 == trigger) {
-		DimmerOut::set();
-	}
-}
-
-ISR(PCINT1_vect)
-{
-	ac_zero = DimmerSense::read() != 0;
-	if (ac_zero) // zero crossing rising edge
-	{
-		DimmerOut::clear();
-		t2 = 0;
-		++ac_crossings;
-
-		// Sweep
-		if ((ac_crossings % 2) == 0)
-		{
-			switch (sweep)
-			{
-			case up:
-				++trigger;
-				if (trigger >= t2_max)
-				{
-					sweep = down;
-					trigger = t2_max - 1;
-				}
-				break;
-			case down:
-				--trigger;
-				if (trigger <= 0)
-				{
-					sweep = up;
-					trigger = 0;
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	}
-	else
-	{
-		// reset timer2 to avoid jitter
-		Timer2::reset();
-		if ((trigger == 0) && (sweep != idle)) {
-			DimmerOut::set();
-		}
-	}
-}
+typedef Pin::D5 Relay;
+// typedef Pin::C1 DimmerSense;
 
 float convert_ds18b20(uint16_t t)
 {
@@ -141,20 +55,19 @@ void display_temp(float value, byte x, byte y, const Glyph *font)
 
 int main(void)
 {
-	bool is_calibrated = false;
-
 	Arduino::init();
 	Quadrature::init();
+
+    // disable a2d
+    _SFR_BYTE(ADCSRA) &= ~_BV(ADEN);
 
 	OneWireButtons.Init();
 	OneWireButtons.Scan();
 
 	// uint16_t starttime = Clock16::millis();
 
-	DimmerOut::modeOutput();
-	DimmerOut::clear();
-	DimmerSense::modeInput();
-	DimmerSense::enableChangeInterrupt();
+	Relay::modeOutput();
+	Relay::set();
 
 	Timer2::prescaler1();
 	Timer2::modeNormal();
@@ -170,14 +83,23 @@ int main(void)
 
 	Quadrature::position(29 * QUAD_SCALE);
 
-	display_temp(Quadrature::position() / (float)QUAD_SCALE, 0, 0, glyphs_huge);
+	float targetTemp = Quadrature::position() / (float)QUAD_SCALE;
+
+	display_temp(targetTemp, 0, 0, glyphs_huge);
 
 	OneWireButtons.GetTemperatures();
 
 	int selected = Quadrature::position();
 	uint16_t temp = OneWireButtons[0].Temperature();
 
-	display_temp(convert_ds18b20(temp), 66, 8, glyphs_medium);
+	float currentTemp = convert_ds18b20(temp);
+
+	bool relayOn = targetTemp > currentTemp;
+
+	// the Relay will be on if the Relay Pin is driven low
+	relayOn ? Relay::clear() : Relay::set();
+
+	display_temp(currentTemp, 66, 8, glyphs_medium);
 
 	for (;;) {
 
@@ -189,7 +111,9 @@ int main(void)
 		{
 			selected = Quadrature::position();
 
-			display_temp(selected / (float)QUAD_SCALE, 0, 0, glyphs_huge);
+			targetTemp = selected / (float)QUAD_SCALE;
+
+			display_temp(targetTemp, 0, 0, glyphs_huge);
 		}
 
 		OneWireButtons.GetTemperatures();
@@ -197,37 +121,21 @@ int main(void)
 		if (temp != OneWireButtons[0].Temperature())
 		{
 			temp = OneWireButtons[0].Temperature();
-			display_temp(convert_ds18b20(temp), 66, 8, glyphs_medium);
+			currentTemp = convert_ds18b20(temp);
+			display_temp(currentTemp, 66, 8, glyphs_medium);
 		}
 
-		if (!is_calibrated && ac_crossings >= CALIBRATION_CYCLES)
-		{
-			// display current detected
-			Display::character(124, 0, '~', glyphs_huge);
-
-			is_calibrated = true;
-			trigger = t2_max;
-			sweep = down;
-
-#ifdef DEBUG
-		   	uint16_t = Clock16::millis() - starttime;
-
-			Serial.print("t2: ");
-			Serial.println(t2);
-
-			Serial.print("t2 max: ");
-			Serial.println(t2_max);
-
-			Serial.print(ac_crossings*500/t);
-			Serial.println(" Hz");
-
-			Serial.print("A/C crossings: ");
-			Serial.print(ac_crossings);
-			Serial.print(" ms: ");
-			Serial.println(t);
-#endif
+		if (relayOn) {
+			if (targetTemp - HYSTERESIS <= currentTemp) {
+				relayOn = false;
+			}
+		}
+		else {
+			relayOn = targetTemp > currentTemp;
 		}
 
+		// the Relay will be on if the Relay Pin is driven low
+		relayOn ? Relay::clear() : Relay::set();
 	}
 
 	return 0;
