@@ -125,7 +125,7 @@ int main(void)
 		}
 
 		if (relayOn) {
-			if (targetTemp - HYSTERESIS <= currentTemp) {
+			if (targetTemp <= currentTemp - HYSTERESIS) {
 				relayOn = false;
 			}
 		}
