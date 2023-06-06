@@ -21,8 +21,13 @@ typedef _Quadrature<Pin::D7, Pin::C3, 20 * QUAD_SCALE, 80 * QUAD_SCALE> Quadratu
 
 static Buttons<Pin::D4> OneWireButtons;
 
-typedef Pin::D5 Relay;
-// typedef Pin::C1 DimmerSense;
+typedef Pin::C1 Relay;
+
+ISR(TIMER0_OVF_vect)
+{
+    Quadrature::update();
+    clock16_isr();
+}
 
 float convert_ds18b20(uint16_t t)
 {
@@ -58,26 +63,22 @@ int main(void)
 	Arduino::init();
 	Quadrature::init();
 
+	Relay::modeOutput();
+	Relay::set();
+
     // disable a2d
     _SFR_BYTE(ADCSRA) &= ~_BV(ADEN);
+
+	SPI_D::init(1<<SPR0, true);
+
+	// The OneWire initialisation takes some time that the Noritake display needs for setup (250 ms)
+	// It works in practice, I didn't measure it.
 
 	OneWireButtons.Init();
 	OneWireButtons.Scan();
 
-	// uint16_t starttime = Clock16::millis();
+	OneWireButtons.GetTemperatures();
 
-	Relay::modeOutput();
-	Relay::set();
-
-	Timer2::prescaler1();
-	Timer2::modeNormal();
-	Timer2::enableOverflowInterrupt();
-	// Use internal clock for timer2
-	ASSR |= (1<<AS2);
-
-	SPI_D::init(1<<SPR0, true);
-
-	Clock16::sleep(250);
 	Display::clear();
 	Display::on(false);
 
@@ -86,8 +87,6 @@ int main(void)
 	float targetTemp = Quadrature::position() / (float)QUAD_SCALE;
 
 	display_temp(targetTemp, 0, 0, glyphs_huge);
-
-	OneWireButtons.GetTemperatures();
 
 	int selected = Quadrature::position();
 	uint16_t temp = OneWireButtons[0].Temperature();
