@@ -11,7 +11,7 @@
 #include "Noritake.h"
 
 const int QUAD_SCALE = 10;
-const float HYSTERESIS = 0.1;
+const float HYSTERESIS = 0.2;
 
 typedef _SPI<Pin::SPI_SCK, Pin::SPI_MISO, Pin::SPI_MOSI, Pin::SPI_SS> SPI_D;
 
@@ -94,6 +94,7 @@ int main(void)
 	float currentTemp = convert_ds18b20(temp);
 
 	bool relayOn = targetTemp > currentTemp;
+	bool cooling = !relayOn;
 
 	// the Relay will be on if the Relay Pin is driven low
 	relayOn ? Relay::clear() : Relay::set();
@@ -125,12 +126,21 @@ int main(void)
 		}
 
 		if (relayOn) {
-			if (targetTemp <= currentTemp - HYSTERESIS) {
+			if (targetTemp <= currentTemp) {
 				relayOn = false;
+				cooling = true;
 			}
 		}
 		else {
-			relayOn = targetTemp > currentTemp;
+			if (cooling) {
+				relayOn = targetTemp - HYSTERESIS > currentTemp;
+				if (relayOn) {
+					cooling = false;
+				}
+			}
+			else {
+				relayOn = targetTemp > currentTemp;
+			}
 		}
 
 		// the Relay will be on if the Relay Pin is driven low
