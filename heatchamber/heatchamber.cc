@@ -1,3 +1,4 @@
+#include <avr/eeprom.h>
 #include <arduino--.h>
 #include <spi.h>
 #include <onewire.h>
@@ -10,8 +11,12 @@
 #include "fonts/fonts.c"
 #include "Noritake.h"
 
+const float DEFAULT_TEMP = 27.0;
 const int QUAD_SCALE = 10;
 const float HYSTERESIS = 0.2;
+const int EEPROM_MIN_WAIT = 1000;
+
+float EEMEM DefaultTemp = DEFAULT_TEMP;
 
 typedef _SPI<Pin::SPI_SCK, Pin::SPI_MISO, Pin::SPI_MOSI, Pin::SPI_SS> SPI_D;
 
@@ -61,7 +66,8 @@ void display_temp(float value, byte x, byte y, const Glyph *font)
 int main(void)
 {
 	Arduino::init();
-	Quadrature::init();
+
+	Quadrature::initChangeInterrupt();
 
 	Relay::modeOutput();
 	Relay::set();
@@ -82,9 +88,15 @@ int main(void)
 	Display::clear();
 	Display::on(false);
 
-	Quadrature::position(29 * QUAD_SCALE);
+	float targetTemp = eeprom_read_float(&DefaultTemp);
 
-	float targetTemp = Quadrature::position() / (float)QUAD_SCALE;
+	if (isnan(targetTemp)) {
+		// uninitialized EEPROM will read as 0xffffffff, which is NAN
+		targetTemp = DEFAULT_TEMP;
+		eeprom_write_float(&DefaultTemp, targetTemp);
+	}
+
+	Quadrature::position((int)(targetTemp * QUAD_SCALE));
 
 	display_temp(targetTemp, 0, 0, glyphs_huge);
 
@@ -101,6 +113,12 @@ int main(void)
 
 	display_temp(currentTemp, 66, 8, glyphs_medium);
 
+	bool updatePending = false;
+	typename Clock16::time_res_t updateWaitStart = 0;
+	int updateClearCounter = 0;
+	const char* updateIndicator = "\x02";
+	byte updateIndicatorWidth = Display::glyph_width(updateIndicator, glyphs_medium);
+
 	for (;;) {
 
 		set_sleep_mode(SLEEP_MODE_IDLE);
@@ -114,6 +132,29 @@ int main(void)
 			targetTemp = selected / (float)QUAD_SCALE;
 
 			display_temp(targetTemp, 0, 0, glyphs_huge);
+
+			updatePending = true;
+			// update the wait start timer even if it is active already,
+			// so we wait the proper period after the last value change
+			updateWaitStart = Clock16::millis();
+		}
+
+		// EEPROM update & write indicator
+
+		if (updateClearCounter) {
+			// clear the update indicator
+			--updateClearCounter;
+			if (!updateClearCounter) {
+				Display::area(130, 5, 130 + updateIndicatorWidth, 16, 'C'); // 'C' is clear
+			}
+		}
+
+		if (updatePending && (Clock16::millis() - updateWaitStart) >= EEPROM_MIN_WAIT) {
+			updatePending = false;
+			// show arrow for update
+			Display::string(130, 5, updateIndicator, glyphs_medium);
+			eeprom_update_float(&DefaultTemp, targetTemp);
+			updateClearCounter = 2;
 		}
 
 		OneWireButtons.GetTemperatures();

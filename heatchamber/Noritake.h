@@ -157,7 +157,7 @@ public:
         return 0;
     }
 
-	static byte glyph_width(const byte *s, const Glyph *font) {
+	static byte glyph_width(const char *s, const Glyph *font) {
         const Glyph *g;
         byte w = 0;
 

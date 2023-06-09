@@ -41,7 +41,7 @@ heatchamber.cc: fonts/fonts.c
 	$(CC) $(CFLAGS) -c -o $(<:.c=.o) $<
 
 .elf.bin:
-	$(OBJCOPY) -j .text -j .data -O binary $< $@
+	$(OBJCOPY) -j .text -j .data -j .eeprom -O binary $< $@
 
 .elf.lst:
 	$(OBJDUMP) -h -S $< > $@
